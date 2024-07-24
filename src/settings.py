@@ -43,6 +43,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "salon/templates/salon"),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -57,6 +58,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'src.wsgi.application'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': {
