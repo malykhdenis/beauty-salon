@@ -1,10 +1,9 @@
 from django.urls import path
-from django.shortcuts import redirect
 
-from . import views
+from .views import index
 
 app_name = 'home'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
 ]
