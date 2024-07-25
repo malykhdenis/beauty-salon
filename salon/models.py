@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator
@@ -11,7 +12,7 @@ from environs import Env
 # from django.contrib.auth.models import User
 # from phonenumber_field.modelfields import PhoneNumberField
 
-from user.models import User
+User = get_user_model()
 
 env = Env()
 env.read_env()
