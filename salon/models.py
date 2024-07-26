@@ -18,6 +18,7 @@ env.read_env()
 class Salon(models.Model):
     name = models.CharField(verbose_name='Название салона', max_length=200, db_index=True)
     address = models.TextField(verbose_name='Адрес', max_length=200, db_index=True, blank=True)
+    foto = models.ImageField(verbose_name='Фото', upload_to='salon_foto', blank=True)
 
     class Meta:
         verbose_name = 'салон'
@@ -33,8 +34,6 @@ class Service(models.Model):
                                  validators=[MinValueValidator(0)])
     salon_service = models.ManyToManyField('Salon', verbose_name='Услуги салона',
                                            related_name='salon_services', blank=True)
-    # master_service = models.ManyToManyField('Master', verbose_name='Услуги салона',
-    #                                         related_name='master_services', blank=True)
 
     class Meta:
         verbose_name = 'услуга'
@@ -83,6 +82,7 @@ class Feedback(models.Model):
 
     def __str__(self):
         return str(self.user)
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', related_name='orders', on_delete=models.CASCADE)
