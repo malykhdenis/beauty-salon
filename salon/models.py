@@ -1,9 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from django.core.validators import MinValueValidator
 
-# from django.utils import timezone
-from django.contrib.auth.models import User
-# from phonenumber_field.modelfields import PhoneNumberField
+from django.dispatch import receiver
+from django.core.validators import MinValueValidator
+from django.db.models.signals import pre_save
+
+import requests
+from environs import Env
+
+
+User = get_user_model()
+
+env = Env()
+env.read_env()
+
 
 class Salon(models.Model):
     name = models.CharField(verbose_name='Название салона', max_length=200, db_index=True)
@@ -90,4 +100,32 @@ class Order(models.Model):
         return str(self.user)
 
 
+class Advertising(models.Model):
+    url = models.URLField('Ссылка', blank=True)
+    text = models.TextField('Текст рекламы')
+    responses = models.IntegerField(
+        'Количество откликов',
+        null=True,
+        blank=True,
+        default=0,
+    )
 
+    class Meta:
+        verbose_name = 'Реклама'
+        verbose_name_plural = 'Реклама'
+
+
+@receiver(pre_save, sender=Advertising)
+def pre_save_advertising(sender, instance, **kwargs):
+    if not instance.pk:
+        url = "https://t.ly/api/v1/link/shorten"
+        headers = {
+            "Authorization": f"Bearer {env.str('TLY_API_TOKEN')}"
+        }
+        payload = {
+            "long_url": "https://firmbarbershop.ru/"
+        }
+        response = requests.post(url, headers=headers, data=payload)
+        response.raise_for_status()
+        instance.url = response.json()["short_url"]
+        instance.responses = 0

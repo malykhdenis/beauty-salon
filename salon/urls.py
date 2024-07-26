@@ -1,10 +1,12 @@
 from django.urls import path
-from django.shortcuts import redirect
+from .views import index, services, contacts, masters, reviews, service
 
-from . import views
-
-app_name = 'home'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
+    path('contacts/', contacts, name='contacts'),
+    path('masters/', masters, name='masters'),
+    path('reviews/', reviews, name='reviews'),
+    path('services/', services, name='services'),
+    path('service/', service, name='service'),
 ]
