@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.db.models.signals import pre_save
@@ -7,10 +8,6 @@ from django.db.models.signals import pre_save
 import requests
 from environs import Env
 
-
-# from django.utils import timezone
-# from django.contrib.auth.models import User
-# from phonenumber_field.modelfields import PhoneNumberField
 
 User = get_user_model()
 

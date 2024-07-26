@@ -81,3 +81,4 @@ class AdvertisingModel(admin.ModelAdmin):
             ad.responses = response.json()["clicks"]
         Advertising.objects.bulk_update(advertising, ['responses'])
         return super().changelist_view(request, extra_context=extra_context)
+      
