@@ -14,11 +14,11 @@ def reviews(request):
 
 
 def masters(request):
-    return render(request, "salon/masters.html")
+    return render(request, "salon/master.html")
 
 
 def services(request):
-    return render(request, "salon/services.html")
+    return render(request, "salon/service.html")
 
 
 def popup(request):
