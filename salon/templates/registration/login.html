@@ -3,28 +3,32 @@
 {% block title %}Логин{% endblock %}
 
 {% block content %}
-    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen d-flex align-items-center justify-content-center">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center align-items-center">
                 <form method="post" action="{% url 'user:login' %}" class="d-flex flex-column align-items-center"
-                      style="max-width: 420px">
+                      style="max-width: 420px; background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     {% csrf_token %}
-                    <h1 class="modal-title text-center fw-bold mb-3">Вход</h1>
+                    <h1 class="modal-title text-center fw-bold mb-3" style="color: #333;">Вход</h1>
                     <input type="email" required name="username"
-                           class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24"
+                           style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;"
                            placeholder="E-mail">
                     <input type="password" required name="password"
-                           class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24"
+                           style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;"
                            placeholder="Пароль">
-                    <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#ForgetModal"
-                       data-bs-dismiss="modal" aria-label="Close">Забыли пароль?</a>
-                    <button class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+                    <a href="#" class="SelfStorage_orange mb-4" data-bs-toggle="modal" data-bs-target="#ForgetModal"
+                       data-bs-dismiss="modal" aria-label="Close" style="color: #ff6600; text-decoration: none;">Забыли пароль?</a>
+                    <button class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange"
+                            style="background-color: #ff6600; border: none; border-radius: 8px;">
                         Войти
                     </button>
-                    <span>Нет аккаунта? <a href="{% url 'user:register' %}" class="SelfStorage_orange">Зарегистрируйтесь на сайте</a>
+                    <span style="color: #6c757d;">Нет аккаунта? <a href="{% url 'user:register' %}" class="SelfStorage_orange"
+                           style="color: #ff6600; text-decoration: none;">Зарегистрируйтесь на сайте</a>
                     </span>
                 </form>
             </div>

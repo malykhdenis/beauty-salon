@@ -1,37 +1,44 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Регистарция{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 420px;">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center align-items-center">
                 <form method="post" action="{% url 'user:register' %}" class="d-flex flex-column align-items-center"
-                      style="max-width: 420px">
+                      style="max-width: 420px; background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     {% csrf_token %}
-                    <h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
+                    <h1 class="modal-title text-center fw-bold mb-3" style="color: #333;">Регистрация</h1>
                     <input type="email" required name="email"
-                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24"
+                           style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;"
                            placeholder="E-mail">
                     <input type="password" required name="password"
-                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24"
+                           style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;"
                            placeholder="Пароль">
                     <input type="password" required name="PASSWORD_CONFIRM"
-                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey"
+                           class="form-control border-8 mb-4 py-3 px-5 border-0 fs_24"
+                           style="background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;"
                            placeholder="Подтверждение пароля">
-                    <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'pdfs/agreement.pdf' %}"
-                                                                                                        class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
+                    <span class="fw-light SelfStorage_grey mb-3" style="color: #6c757d;">Нажимая на кнопку, вы подтверждаете свое <a href="{% static 'pdfs/agreement.pdf' %}"
+                                                                                                        class="SelfStorage_grey" style="color: #ff6600;">согласие на обработку персональных данных</a></span>
                     <button type="submit"
-                            class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">
+                            class="btn border-8 py-3 px-5 mt-3 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange"
+                            style="background-color: #ff6600; border: none; border-radius: 8px;">
                         Зарегистрироваться
                     </button>
-                    <span>Уже зарегистрированы? <a href="{% url 'user:login' %}" class="SelfStorage_orange">Войти в личный кабинет</a></span>
+                    <span style="color: #6c757d;">Уже зарегистрированы? <a href="{% url 'user:login' %}" class="SelfStorage_orange"
+                               style="color: #ff6600; text-decoration: none;">Войти в личный кабинет</a></span>
 
                 </form>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
