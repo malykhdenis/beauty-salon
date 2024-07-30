@@ -9,7 +9,8 @@ class UserManager(BaseUserManager):
 
     def create_user(self, password: str = None, **kwargs) -> 'User':
         user = self.model(
-            **kwargs
+            **kwargs,
+            is_active=False
         )
         user.set_password(password)
         user.save()
