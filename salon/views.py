@@ -48,16 +48,16 @@ def payment(request):
     Configuration.account_id = env.int('YOOKASSA_ACCOUNT_ID')
     Configuration.secret_key = env.str('YOOKASSA_SECRET_KEY')
 
-    order = Order.objects.get(user=request.user)
+    # order = Order.objects.get(user=request.user)  # получение заказа текущего пользователя
 
     payment = Payment.create({
         "amount": {
-            "value": "100",  # str(order.price)
+            "value": "3900",  # str(order.price)
             "currency": "RUB"
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": "https://beauty_salon.com/"
+            "return_url": "https://beauty_salon.com/"  # страница редиректа после оплаты, только https
         },
         "capture": True,
         "description": "Оплата заказа"
