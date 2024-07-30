@@ -1,3 +1,7 @@
+import requests
+
+from datetime import datetime, timezone
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -5,7 +9,6 @@ from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.db.models.signals import pre_save
 
-import requests
 from environs import Env
 
 
@@ -28,10 +31,26 @@ class Salon(models.Model):
         return self.name
 
 
+class ServiceCategory(models.Model):
+    name = models.CharField('Название категории', max_length=200, db_index=True)
+    salon = models.ManyToManyField('Salon', related_name='salon_categories', blank=True)
+
+    # service = models.ForeignKey('Service', verbose_name='Услуги', related_name='service_categories', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'категория услуги'
+        verbose_name_plural = 'категории услуги'
+
+    def __str__(self):
+        return self.name
+
 class Service(models.Model):
-    name = models.CharField('Название процедуры', max_length=200, db_index=True)
+    name = models.CharField('Название услуги', max_length=200, db_index=True)
     price = models.DecimalField(verbose_name='Цена', max_digits=8, decimal_places=2,
                                  validators=[MinValueValidator(0)])
+    service_category = models.ForeignKey('ServiceCategory', verbose_name='Категория услуги',
+                                         related_name='services', on_delete=models.CASCADE, blank=True, null=True)
+
     salon_service = models.ManyToManyField('Salon', verbose_name='Услуги салона',
                                            related_name='salon_services', blank=True)
 
@@ -47,8 +66,18 @@ class Master(models.Model):
     firstname = models.CharField('Имя', max_length=200, db_index=True)
     lastname = models.CharField('Фамилия', max_length=200, db_index=True)
     foto = models.ImageField(verbose_name='Фото', upload_to='foto', blank=True)
+    speciality = models.CharField('Специальность', max_length=200, blank=True, db_index=True)
+    start_career = models.DateTimeField(verbose_name='Когда начал работать', blank=True, null=True)
     master_service = models.ManyToManyField('Service', verbose_name='Услуги', related_name='master_services', blank=True)
     master_salon = models.ManyToManyField('Salon', verbose_name='Салон', related_name='master_salons', blank=True)
+
+    def experience(self):
+
+        exp = (datetime.now(timezone.utc) - self.start_career).days
+        year = exp//365
+        month = (exp % 365)//30
+
+        return f'{year}г {month}мес'
 
     class Meta:
         verbose_name = 'мастер'
@@ -70,6 +99,7 @@ class Time(models.Model):
 
     def __str__(self):
         return str(f'{self.time.hour} : {self.time.minute}{self.time.minute}')
+
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', related_name='complaints', on_delete=models.CASCADE)
