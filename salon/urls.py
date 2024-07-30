@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import index, services, contacts, masters, reviews, service
+from .views import (index, services, contacts, masters, notes, payment,
+                    reviews, service)
 
 app_name = 'salon'
 urlpatterns = [
@@ -10,4 +11,6 @@ urlpatterns = [
     path('reviews/', reviews, name='reviews'),
     path('services/', services, name='services'),
     path('service/', service, name='service'),
+    path('notes/', notes, name='notes'),
+    path('payment/', payment, name='payment'),
 ]
