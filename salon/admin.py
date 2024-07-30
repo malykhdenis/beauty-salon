@@ -3,7 +3,7 @@ from django.contrib import admin
 import requests
 from environs import Env
 
-from .models import Advertising, Salon, Master, Service, Time, Feedback, Order
+from .models import Advertising, Salon, Master, Service, Time, Feedback, Order, ServiceCategory
 
 env = Env()
 env.read_env()
@@ -17,8 +17,8 @@ class TimeinLine(admin.TabularInline):
     model = Salon.available_time.through
     raw_id_fields = ('salon',)
 
-class ServiceinLine(admin.TabularInline):
-    model = Salon.salon_services.through
+class ServiceCategoryinLine(admin.TabularInline):
+    model = Salon.salon_categories.through
     # raw_id_fields = ('salon',)
     # raw_id_fields = ('name',)
 
@@ -32,7 +32,7 @@ class MasterAdmin(admin.ModelAdmin):
 class SalonAdmin(admin.ModelAdmin):
     inlines = [
         MasterinLine,
-        ServiceinLine,
+        ServiceCategoryinLine,
         TimeinLine
     ]
 
