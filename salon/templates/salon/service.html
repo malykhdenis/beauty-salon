@@ -93,6 +93,7 @@
 			</div>
 		</div>
 	</header>
+
 	<section id="service">
 		<div class="container">
 			<div class="service">
@@ -103,107 +104,57 @@
 					<h1 class="service__title">Запись на услугу</h1>
 					<button class="service__btn btn">Запись по телефону</button>
 				</div>
-				<h>{{pointed_cats}}
-				<form action="#" class="service__form">
-
+				<form action="#" method="post" class="service__form">{% csrf_token %}
 					<div class="service__form_block service__salons">
-						<button class="accordion">(Выберите салон)</button>
-						<div class="panel">
-						{% for salon in pointed_salons %}
-						  <div class="accordion__block fic">
-							<div class="accordion__block_intro">{{salon.salon}}</div>
-							<div class="accordion__block_address">{{salon.address}}</div>
-						  </div>
-						{% endfor %}
-						</div>
+						<select name="salon" id="" class="accordion">
+							<option value="" selected class="accordion__block fic">(Выберите салон)</option>
+							{% for salon in salons %}
+								<option value="{{salon.id}}" class="accordion__block fic">{{salon.name}}</option>
+							{% endfor %}
+						</select>
 					</div>
 					<div class="service__form_block service__services">
-						<button class="accordion">(Выберите услугу)</button>
-						<div class="panel">
-					{% for cat in pointed_cats %}
-							<button class="accordion">{{cat.name}}</button>
-						 	<div class="panel">
-								<div class="accordion__block_items">
-									{% for serv in cat.services %}
-									<div class="accordion__block_item fic">
-										<div class="accordion__block_item_intro">{{serv.serv_name}}</div>
-										<div class="accordion__block_item_address">{{serv.price}}</div>
-									</div>
-									{% endfor %}
-								</div>
-							</div>
-					{% endfor %}
-						</div>
+						<select name="service" id="" class="accordion">
+							<option value="" selected class="accordion__block fic">(Выберите услугу)</option>
+							{% for service in services %}
+								<option value="{{service.id}}" class="accordion__block fic">{{service.name}}</option>
+							{% endfor %}
+						</select>
 					</div>
 					<div class="service__form_block service__masters">
-						<button class="accordion">(Выберите мастера)</button>
-
-						<div class="panel">
-
-							<div class="accordion__block fic">
-								{% for mas in cat.masters %}
-								<div class="accordion__block_item_intro">{{mas.master_name}}</div>
-								{% endfor %}
-							</div>
-
-						</div>
-
+						<select name="master" id="" class="accordion">
+							<option value="" selected class="accordion__block fic">(Выберите мастера)</option>
+							{% for master in masters %}
+								<option value="{{master.id}}" class="accordion__block fic">{{master.firstname}} {{master.lastname}}</option>
+							{% endfor %}
+						</select>
 					</div>
-
+					<button type="submit" class="service__btn">Показать доступное время</button>
 				</form>
 			</div>
 		</div>
 	</section>
+
 	<section id="time">
 		<div class="container">
 			<div class="time">
-				<h2 class="time__title">Выберите время</h2>
 				<div class="time__block">
 					<div class="row">
-						<div class="col-md-4">
-							<div id="datepickerHere"></div>
-						</div>
-						<div class="col-md-8">
-							<div class="time__elems">
-								<div class="time__items">
-									<div class="time__elems_intro">Утро</div>
-									<div class="time__elems_elem fic">
-										<button data-time="10:00" class="time__elems_btn">10:00</button>
-										<button data-time="10:30" class="time__elems_btn">10:30</button>
-									</div>
-								</div>
-								<div class="time__items">
-									<div class="time__elems_intro">День</div>
-									<div class="time__elems_elem fic">
-										<button data-time="12:00" class="time__elems_btn">12:00</button>
-										<button data-time="12:30" class="time__elems_btn">12:30</button>
-										<button data-time="15:00" class="time__elems_btn">15:00</button>
-										<button data-time="16:30" class="time__elems_btn">16:30</button>
-									</div>
-								</div>
-								<div class="time__items">
-									<div class="time__elems_intro">Вечер</div>
-									<div class="time__elems_elem fic">
-										<button data-time="17:00" class="time__elems_btn">17:00</button>
-										<button data-time="18:30" class="time__elems_btn">18:30</button>
-										<button data-time="19:00" class="time__elems_btn">19:00</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						<form action="{% url 'salon:service-finally' %}" method="post">{% csrf_token %}
+							<label class="time__title">Выберите время</label>
+							<select name="time" id="" multiple="True" class="accordion">
+								{% for hour in available_hours %}
+									<option class="time__elems_btn">{{hour.time}}</option>
+								{% endfor %}
+							</select>
+							<button type="submit" class="time__btns_next">Далее</button>
+						</form>
 					</div>
 				</div>
-				<div class="time__btns">
-					<div class="row">
-						<div class="col-md-12">
-							<button  class="time__btns_next">Далее</button>
-							<button  class="time__btns_home">На главную</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			</div>	
 		</div>
 	</section>
+
 	<footer id="footer">
 		<div class="container">
 			<div class="footer">

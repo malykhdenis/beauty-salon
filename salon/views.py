@@ -2,12 +2,13 @@ import uuid
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .models import Advertising, Salon, Master, Service, Time, Feedback, Order, ServiceCategory
 from django.contrib.auth.decorators import login_required
 from environs import Env
 from yookassa import Configuration, Payment
 
-from .models import Order
+from .models import (Advertising, Salon, Master, Service, Time, Feedback,
+                     Order, ServiceCategory)
+
 
 env = Env()
 env.read_env()
@@ -73,50 +74,34 @@ def masters(request):
 @login_required
 def services(request):
     salons = Salon.objects.all()
-    cats = ServiceCategory.objects.all()
-    pointed_salons = []
-    pointed_cats = []
-    for salon in salons:
-        pointed_salon = {
-            'salon': salon.name,
-            'address': salon.address,
-        }
-        pointed_salons.append(pointed_salon)
-    for cat in cats:
-        pointed_cat = {
-            'name': cat.name,
-        }
-        pointed_services = []
-        for serv in cat.services.all():
-            pointed_service = {
-                'serv_name': serv.name,
-                'price': serv.price
-            }
-            pointed_services.append(pointed_service)
-            pointed_cat['services'] = pointed_services
-            service_masters = []
-            for master in serv.master_services.all():
-                service_master = {
-                    'master_name': f'{master.firstname} {master.lastname}'
-                }
-                service_masters.append(service_master)
-                pointed_cat['masters'] = service_masters
-        pointed_cats.append(pointed_cat)
+    services = Service.objects.all()
+    masters = Master.objects.all()
 
+    filters = {}
+    for filter_key, filter_value in dict(request.POST).items():
+        if filter_key in ['csrfmiddlewaretoken', 'service']:
+            continue
+        if filter_value[0] != '':
+            filters[filter_key] = int(filter_value[0])
 
-    data = {'pointed_salons': pointed_salons,
-            'pointed_cats': pointed_cats,
-            }
+    available_hours = Time.objects.filter(**filters).filter(available=True)
 
-    return render(request, "salon/service.html", context=data)
+    context = {
+        'salons': salons,
+        'services': services,
+        'masters': masters,
+        'available_hours': available_hours,
+    }
+
+    return render(request, "salon/service.html", context=context)
 
 def popup(request):
     return render(request, "salon/popup.html")
 
 
 @login_required
-def service(request):
-    return render(request, "salon/service.html")
+def service_finally(request):
+    return render(request, "salon/serviceFinally.html")
 
 
 def notes(request):
